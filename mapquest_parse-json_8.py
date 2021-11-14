@@ -9,10 +9,18 @@ main_api = "http://www.mapquestapi.com/directions/v2/alternateroutes?"
 # orig = "Washington, D.C."
 # dest = "Baltimore, Md"
 key = "3Rguwll95IyFGzeG9Rhvf3BJdmKIECHU"
+from tkinter import *
+root = Tk()
+root.title("WELCOME TO MAPQUEST API")
+startbutton = Button(root, text = 'Start', fg ='green',width =20, height = 20, command = quit)
+startbutton.pack( side = LEFT)
+exitbutton = Button(root, text = 'Exit', fg='red',width =20, height = 20,command = quit)
+exitbutton.pack( side = RIGHT)
 
-print("Welcome to the Mapquest API Application.")
-print("a. Start")
-print("b. Exit")
+
+
+
+
 selection = input("Enter a letter: ")
 if selection == 'a' or selection == 'A':
     while True:
@@ -95,3 +103,7 @@ elif selection == 'b' or selection == 'B':
     quit()
 else: 
     print("Enter letter a to b only.")
+
+
+
+root.mainloop()
