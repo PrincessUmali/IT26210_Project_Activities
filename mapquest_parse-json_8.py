@@ -64,35 +64,46 @@ def start():
             def results():
                 win_loc3 = Toplevel(root)
                 win_loc3.title('Results from ' + orig.get() + ' to ' + dest.get())
-                display = Label(win_loc3, text = "Results from " + orig.get() + " to " + dest.get(), font=("Times New Roman", 25, 'bold')).grid(row=0,column=0)
+                display = Label(win_loc3, text = "Results from " + orig.get() + " to " + dest.get(), font=("Times New Roman", 25, 'bold')).pack()
+                
+                sb = Scrollbar(win_loc3, orient = VERTICAL)  
+                sb.pack(side = RIGHT, fill = BOTH)
+                mylist = Listbox(win_loc3, yscrollcommand = sb.set)
 
                 url = var.get()
-                Label(win_loc3, text = "==========================================================================================", font=("Times New Roman", 15)).grid(row=1,column=0)
-                Label(win_loc3, text = "URL: " + url, font=("Times New Roman", 15)).grid(row=2,column=0)
+                Label(win_loc3, text = "==========================================================================================", font=("Times New Roman", 15)).pack()
+                Label(win_loc3, text = "URL: " + url, font=("Times New Roman", 15)).pack()
 
                 json_data = requests.get(url).json()
                 json_status = json_data["info"]["statuscode"]
 
                 if json_status == 0:
-                    Label(win_loc3, text = "==========================================================================================", font=("Times New Roman", 15)).grid(row=3,column=0)
-                    Label(win_loc3, text = "API Status: " + str(json_status) + " = A sucessfull route call.\n", font=("Times New Roman", 15)).grid(row=4,column=0)
-                    Label(win_loc3, text = "==========================================================================================", font=("Times New Roman", 15)).grid(row=5,column=0)
-                    Label(win_loc3, text = "Directions from " + (orig.get()) + " to " + (dest.get()), font=("Times New Roman", 15)).grid(row=6,column=0)
-                    Label(win_loc3, text = "Trip Duration: " + (json_data["route"]["formattedTime"]), font=("Times New Roman", 15)).grid(row=7,column=0)
-                    Label(win_loc3, text = "Kilometers: " + str("{:.2f}".format((json_data["route"]["distance"]) * 1.61)), font=("Times New Roman", 15)).grid(row=8,column=0)
+                    Label(win_loc3, text = "==========================================================================================", font=("Times New Roman", 15)).pack()
+                    Label(win_loc3, text = "API Status: " + str(json_status) + " = A sucessfull route call.\n", font=("Times New Roman", 15)).pack()
+                    Label(win_loc3, text = "==========================================================================================", font=("Times New Roman", 15)).pack()
+                    Label(win_loc3, text = "Directions from " + (orig.get()) + " to " + (dest.get()), font=("Times New Roman", 15)).pack()
+                    Label(win_loc3, text = "Trip Duration: " + (json_data["route"]["formattedTime"]), font=("Times New Roman", 15)).pack()
+                    Label(win_loc3, text = "Kilometers: " + str("{:.2f}".format((json_data["route"]["distance"]) * 1.61)), font=("Times New Roman", 15)).pack()
                     if ["routeType"] == 'fastest' or ["routeType"] == 'shortest':
-                        Label(win_loc3, text = "Fuel Used (Ltr): " + str("{:.2f}".format((json_data["route"]["fuelUsed"]) * 3.78)), font=("Times New Roman", 15)).grid(row=9,column=0)
-                    Label(win_loc3, text = "Route Type: " + (json_data["route"]["options"]["routeType"]), font=("Times New Roman", 15)).grid(row=10,column=0)
-                    Label(win_loc3, text = "Max Routes: " + (json_data["route"]["maxRoutes"]), font=("Times New Roman", 15)).grid(row=11,column=0)
-                    Label(win_loc3, text = "==========================================================================================", font=("Times New Roman", 15)).grid(row=12,column=0)
+                        Label(win_loc3, text = "Fuel Used (Ltr): " + str("{:.2f}".format((json_data["route"]["fuelUsed"]) * 3.78)), font=("Times New Roman", 15)).pack()
+                    Label(win_loc3, text = "Route Type: " + (json_data["route"]["options"]["routeType"]), font=("Times New Roman", 15)).pack()
+                    Label(win_loc3, text = "Max Routes: " + (json_data["route"]["maxRoutes"]), font=("Times New Roman", 15)).pack()
+                    Label(win_loc3, text = "==========================================================================================", font=("Times New Roman", 15)).pack()
                     
-                    for each in json_data["route"]["legs"][0]["maneuvers"]:
-                        Label(win_loc3, text = (each["narrative"]) + " (" + str("{:.2f}".format((each["distance"])*1.61) + " km)"), font=("Times New Roman", 15)).grid(row=13,column=0, sticky = "S")
-                        Label(win_loc3, text = "Time: " + str("{:.2f}".format((each["time"]) / 60)  + " minutes"), font=("Times New Roman", 15)).grid(row=14,column=0)
-                        Label(win_loc3, text = "Using " + each["transportMode"] + " as a means of transportation.\n", font=("Times New Roman", 15)).grid(row=15,column=0)
-                        
-                    alternative = Label(win_loc3, text = "Do you want to know an alternative route?", font=("Times New Roman", 15)).grid(row=16,column=0)
+                    alternative = Label(win_loc3, text = "Do you want to know an alternative route?", font=("Times New Roman", 15))
+                    alternative.pack()
                     alternative_route = StringVar()
+                    
+                    # for each in json_data["route"]["legs"][0]["maneuvers"]:
+                    #     mylist.insert(END, (each["narrative"]) + " (" + str("{:.2f}".format((each["distance"])*1.61) + " km)"))
+                    #     mylist.insert(END, "Time: " + str("{:.2f}".format((each["time"]) / 60)  + " minutes"))
+                    #     mylist.insert(END, "Using " + each["transportMode"] + " as a means of transportation.\n")
+                    #     mylist.pack(side = LEFT, fill= BOTH, expand = TRUE)
+                    #     mylist.configure(justify = CENTER)
+
+                    # alternative = Label(win_loc3, text = "Do you want to know an alternative route?", font=("Times New Roman", 15))
+                    # alternative.pack()
+                    # alternative_route = StringVar()
 
                     def try_again():
                         win_loc5 = Toplevel(root)
@@ -108,25 +119,37 @@ def start():
                     def alternative_routes():
                         win_loc4 = Toplevel(root)
                         win_loc4.title('Results from ' + orig.get() + ' to ' + dest.get())
-                        display = Label(win_loc4, text = "Alternative Results from " + orig.get() + " to " + dest.get(), font=("Times New Roman", 25, 'bold')).grid(row=0,column=0)
+                        display = Label(win_loc4, text = "Alternative Results from " + orig.get() + " to " + dest.get(), font=("Times New Roman", 25, 'bold')).pack()
                         try:
                             for alternativeRoute in json_data["route"]["alternateRoutes"]:
                                 for alternatives in json_data["route"]["legs"][0]["maneuvers"]:
-                                    Label(win_loc4, text = (alternatives["narrative"])  + " (" + str("{:.2f}".format((alternatives["distance"])*1.61) + " km)"), font=("Times New Roman", 15)).grid(row=1,column=0)
-                            Label(win_loc4, text = "==========================================================================================", font=("Times New Roman", 15)).grid(row=2,column=0)
-                            Label(win_loc4, text = "Do you want to try again?", font=("Times New Roman", 15)).grid(row=3,column=0)
+                                    Label(win_loc4, text = (alternatives["narrative"])  + " (" + str("{:.2f}".format((alternatives["distance"])*1.61) + " km)"), font=("Times New Roman", 15)).pack()
+                                    # mylist.pack(side = LEFT, fill= BOTH, expand = TRUE)
+                                    # mylist.configure(justify = CENTER)
+                            Label(win_loc4, text = "==========================================================================================", font=("Times New Roman", 15)).pack()
+                            Label(win_loc4, text = "Do you want to try again?", font=("Times New Roman", 15)).pack()
                     
-                            Button(win_loc4, text = "Yes", font=("Times New Roman", 15), fg = "white", bg = "green", command = start).grid(row=4, column = 0, sticky = "W")
-                            Button(win_loc4, text = "No", font=("Times New Roman", 15), fg = "white", bg = "red", command = thank_you).grid(row=4, column = 0, sticky = "E")
+                            Button(win_loc4, text = "Yes", font=("Times New Roman", 15), fg = "white", bg = "green", command = start).pack(side=LEFT, fill=Y, expand = TRUE)
+                            Button(win_loc4, text = "No", font=("Times New Roman", 15), fg = "white", bg = "red", command = thank_you).pack(side=RIGHT, fill=Y, expand = TRUE)
                         except:
-                            Label(win_loc4, text = "Sorry, there are no alternative route for this location.", font=("Times New Roman", 15)).grid(row=1,column=0)
-                            Label(win_loc4, text = "Do you want to try again?", font=("Times New Roman", 15)).grid(row=2,column=0)
+                            Label(win_loc4, text = "Sorry, there are no alternative route for this location.", font=("Times New Roman", 15)).pack()
+                            Label(win_loc4, text = "Do you want to try again?", font=("Times New Roman", 15)).pack()
 
-                            Button(win_loc4, text = "Yes", font=("Times New Roman", 15), fg = "white", bg = "green", command = start).grid(row=3, column = 0, sticky = "W")
-                            Button(win_loc4, text = "No", font=("Times New Roman", 15), fg = "white", bg = "red", command = thank_you).grid(row=3, column = 0, sticky = "E")
+                            Button(win_loc4, text = "Yes", font=("Times New Roman", 15), fg = "white", bg = "green", command = start).pack(side=LEFT, fill=Y, expand = TRUE)
+                            Button(win_loc4, text = "No", font=("Times New Roman", 15), fg = "white", bg = "red", command = thank_you).pack(side=RIGHT, fill=Y, expand = TRUE)
 
-                    Button(win_loc3, text = "Yes", font=("Times New Roman", 15), fg = "white", bg = "green", command = alternative_routes).grid(row=17, column = 0, sticky = "W")
-                    Button(win_loc3, text = "No", font=("Times New Roman", 15), fg = "white", bg = "red", command = try_again).grid(row=17, column = 0, sticky = "E")
+                    alt_route_confirm = Button(win_loc3, text = "Yes", font=("Times New Roman", 15), fg = "white", bg = "green", command = alternative_routes)
+                    alt_route_confirm.pack()
+                    alt_route_try = Button(win_loc3, text = "No", font=("Times New Roman", 15), fg = "white", bg = "red", command = try_again)
+                    alt_route_try.pack()
+
+                    Label(win_loc3, text = (json_data["route"]["options"]["routeType"]) + " Route: ", font=("Times New Roman", 15, "bold")).pack()
+                    for each in json_data["route"]["legs"][0]["maneuvers"]:
+                        mylist.insert(END, (each["narrative"]) + " (" + str("{:.2f}".format((each["distance"])*1.61) + " km)"))
+                        mylist.insert(END, "Time: " + str("{:.2f}".format((each["time"]) / 60)  + " minutes"))
+                        mylist.insert(END, "Using " + each["transportMode"] + " as a means of transportation.\n")
+                        mylist.pack(side = LEFT, fill= BOTH, expand = TRUE)
+                        mylist.configure(justify = CENTER)
 
                 elif json_status == 402:
                     Label(win_loc3, text = "****************************************************************************************", font=("Times New Roman", 15)).grid(row=0,column=0)
