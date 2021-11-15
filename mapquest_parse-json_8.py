@@ -68,7 +68,7 @@ def start():
                 
                 sb = Scrollbar(win_loc3, orient = VERTICAL)  
                 sb.pack(side = RIGHT, fill = BOTH)
-                mylist = Listbox(win_loc3, yscrollcommand = sb.set)
+                mylist = Listbox(win_loc3, font=("Times New Roman", 15), yscrollcommand = sb.set)
 
                 url = var.get()
                 Label(win_loc3, text = "==========================================================================================", font=("Times New Roman", 15)).pack()
